@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
+
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +14,12 @@
 box-sizing:border-box;
 }
 
+
 body{
 
 margin:0;
-font-family:Segoe UI,Arial;
-background:#f3f8f4;
+font-family:"Segoe UI",Arial;
+background:#f2f8f4;
 
 }
 
@@ -38,18 +40,14 @@ align-items:center;
 }
 
 
-.header h1{
-margin:0;
-}
-
 
 .scan{
 
 width:65px;
 height:65px;
 
-border-radius:50%;
 border:none;
+border-radius:50%;
 
 font-size:30px;
 
@@ -59,27 +57,8 @@ cursor:pointer;
 
 
 
-/* CAMERA */
-
-#cameraBox{
-
-display:none;
-
-background:#000;
-padding:10px;
-
-}
-
-video{
-
-width:100%;
-border-radius:20px;
-
-}
-
-
-
 /* SEARCH */
+
 
 .search{
 
@@ -88,16 +67,17 @@ padding:20px;
 }
 
 
-input{
+.search input{
 
 width:100%;
-height:55px;
 
-border-radius:15px;
+height:60px;
+
+border-radius:18px;
 
 border:2px solid #087830;
 
-font-size:20px;
+font-size:22px;
 
 padding:15px;
 
@@ -105,37 +85,29 @@ padding:15px;
 
 
 
-/* FREEZER */
+/* CONTAINER */
 
-.freezer{
 
-background:white;
+.container{
 
 margin:20px;
 
-padding:20px;
+background:white;
 
 border-radius:25px;
 
-}
+padding:20px;
 
-
-.title{
-
-font-size:25px;
-
-font-weight:bold;
-
-color:#087830;
+box-shadow:0 5px 15px #ddd;
 
 }
 
 
 
-/* GRID RAK */
+/* GRID */
 
 
-.rackGrid{
+.grid{
 
 display:grid;
 
@@ -143,28 +115,26 @@ grid-template-columns:repeat(10,1fr);
 
 gap:10px;
 
-margin-top:20px;
-
 }
 
 
 
-.rack{
+.rack,
+.box,
+.tube{
 
-height:70px;
-
-background:#e9f5ec;
+background:#e8f5ec;
 
 border-radius:12px;
 
 display:flex;
 
-align-items:center;
 justify-content:center;
-
-font-weight:bold;
+align-items:center;
 
 cursor:pointer;
+
+font-weight:bold;
 
 transition:.3s;
 
@@ -172,72 +142,10 @@ transition:.3s;
 
 
 
-.rack:hover{
 
-transform:scale(1.05);
+.rack{
 
-}
-
-
-
-.rack.active{
-
-background:#00a651;
-
-color:white;
-
-}
-
-
-
-
-/* DETAIL RAK */
-
-
-.detail{
-
-display:none;
-
-animation:open .5s;
-
-}
-
-
-
-.detail.show{
-
-display:block;
-
-}
-
-
-
-.back{
-
-background:#087830;
-color:white;
-
-padding:12px 20px;
-
-border-radius:15px;
-
-display:inline-block;
-
-cursor:pointer;
-
-margin-bottom:20px;
-
-}
-
-
-
-.boxGrid{
-
-display:grid;
-
-grid-template-columns:repeat(10,1fr);
-
-gap:10px;
+height:70px;
 
 }
 
@@ -245,71 +153,72 @@ gap:10px;
 
 .box{
 
-height:70px;
+height:80px;
 
-background:#e9f5ec;
+}
+
+
+
+.tube{
+
+height:60px;
+
+font-size:12px;
+
+padding:5px;
+
+}
+
+
+
+.active{
+
+background:#00a651!important;
+
+color:white!important;
+
+transform:scale(1.05);
+
+}
+
+
+
+.hidden{
+
+display:none;
+
+}
+
+
+
+button{
+
+background:#087830;
+
+color:white;
+
+border:none;
+
+padding:12px 20px;
 
 border-radius:12px;
 
-display:flex;
-
-align-items:center;
-justify-content:center;
-
-font-weight:bold;
+cursor:pointer;
 
 }
-
-
-
-.box.target{
-
-background:#00a651;
-color:white;
-
-}
-
-
-
-@keyframes open{
-
-
-from{
-
-opacity:0;
-transform:translateY(30px);
-
-}
-
-to{
-
-opacity:1;
-transform:translateY(0);
-
-}
-
-}
-
 
 
 
 @media(max-width:800px){
 
-
-.rackGrid{
-
-grid-template-columns:repeat(5,1fr);
-
-}
-
-
-.boxGrid{
+.grid{
 
 grid-template-columns:repeat(5,1fr);
 
 }
 
 }
+
 
 
 </style>
@@ -317,7 +226,9 @@ grid-template-columns:repeat(5,1fr);
 </head>
 
 
+
 <body>
+
 
 
 <div class="header">
@@ -332,7 +243,7 @@ grid-template-columns:repeat(5,1fr);
 </div>
 
 
-<button class="scan" onclick="openCamera()">
+<button class="scan" onclick="camera()">
 
 📷
 
@@ -343,12 +254,6 @@ grid-template-columns:repeat(5,1fr);
 
 
 
-<div id="cameraBox">
-
-<video id="video" autoplay></video>
-
-</div>
-
 
 
 <div class="search">
@@ -357,7 +262,7 @@ grid-template-columns:repeat(5,1fr);
 
 id="search"
 
-placeholder="Cari rak / box..."
+placeholder="Cari tube / box / rak"
 
 onkeyup="searchData()">
 
@@ -368,24 +273,22 @@ onkeyup="searchData()">
 
 
 
-<div class="freezer">
-
-
-<div class="title">
-
-🧊 FREEZER -80°C A
-
-</div>
+<div class="container">
 
 
 
-<!-- GRID RAK -->
-
-<div id="rackView">
+<!-- RAK -->
 
 
-<div class="rackGrid" id="rackGrid">
+<div id="rackPage">
 
+
+<h2>
+🧊 FREEZER -80°C C
+</h2>
+
+
+<div id="rackGrid" class="grid">
 
 </div>
 
@@ -397,25 +300,55 @@ onkeyup="searchData()">
 
 
 
-<!-- DETAIL -->
 
-<div id="detail" class="detail">
+<!-- BOX -->
 
 
-<div class="back" onclick="backRack()">
+<div id="boxPage" class="hidden">
 
-⬅ Kembali Rak
 
-</div>
+<button onclick="backRack()">
 
+⬅ Rak
+
+</button>
 
 
 <h2 id="rackTitle"></h2>
 
 
+<div id="boxGrid" class="grid">
 
-<div class="boxGrid" id="boxGrid">
+</div>
 
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- TUBE -->
+
+
+<div id="tubePage" class="hidden">
+
+
+<button onclick="backBox()">
+
+⬅ Box
+
+</button>
+
+
+<h2 id="boxTitle"></h2>
+
+
+<div id="tubeGrid" class="grid">
 
 </div>
 
@@ -425,6 +358,7 @@ onkeyup="searchData()">
 
 
 </div>
+
 
 
 
@@ -434,23 +368,45 @@ onkeyup="searchData()">
 <script>
 
 
-let rackGrid =
+let currentRack;
+
+let currentBox;
+
+
+
+const rackGrid =
 document.getElementById("rackGrid");
 
-let detail =
-document.getElementById("detail");
+
+const rackPage =
+document.getElementById("rackPage");
 
 
-let boxGrid =
+const boxPage =
+document.getElementById("boxPage");
+
+
+const tubePage =
+document.getElementById("tubePage");
+
+
+
+const boxGrid =
 document.getElementById("boxGrid");
 
-let selectedRack="";
+
+const tubeGrid =
+document.getElementById("tubeGrid");
 
 
 
 
 
-// buat rak 1-100
+
+// ======================
+// CREATE RAK 1-100
+// ======================
+
 
 for(let i=1;i<=100;i++){
 
@@ -461,8 +417,8 @@ document.createElement("div");
 
 r.className="rack";
 
-r.innerHTML=
-"R"+i;
+r.innerHTML="R"+i;
+
 
 
 r.onclick=function(){
@@ -472,7 +428,9 @@ openRack(i);
 }
 
 
+
 rackGrid.appendChild(r);
+
 
 
 }
@@ -481,31 +439,32 @@ rackGrid.appendChild(r);
 
 
 
+
+
 function openRack(number){
 
 
-selectedRack=number;
+currentRack=number;
 
 
-document
-.getElementById("rackView")
-.style.display="none";
+
+rackPage.classList.add("hidden");
 
 
-detail.classList.add("show");
+boxPage.classList.remove("hidden");
 
 
 document
 .getElementById("rackTitle")
 .innerHTML=
-"Rak "+number;
+"RAK "+number;
+
 
 
 
 boxGrid.innerHTML="";
 
 
-// buat 10 box
 
 for(let i=1;i<=10;i++){
 
@@ -518,6 +477,16 @@ b.className="box";
 
 b.innerHTML=
 "BOX "+i;
+
+
+b.dataset.box=i;
+
+
+b.onclick=function(){
+
+openBox(i);
+
+}
 
 
 
@@ -534,21 +503,145 @@ boxGrid.appendChild(b);
 
 
 
-function backRack(){
 
 
-detail.classList.remove("show");
+
+function openBox(number){
+
+
+currentBox=number;
+
+
+
+boxPage.classList.add("hidden");
+
+
+tubePage.classList.remove("hidden");
+
 
 
 document
-.getElementById("rackView")
-.style.display="block";
+.getElementById("boxTitle")
+.innerHTML=
+
+"RAK "
++currentRack+
+" BOX "
++number;
+
+
+
+
+tubeGrid.innerHTML="";
+
+
+
+// 100 tube
+
+
+for(let i=1;i<=100;i++){
+
+
+let t =
+document.createElement("div");
+
+
+t.className="tube";
+
+
+
+let code =
+
+"C045"
+
++
+
+String(currentRack)
+.padStart(2,"0")
+
++
+
+String(number)
+.padStart(2,"0")
+
++
+
+"B"
+
++
+
+String(number)
+.padStart(2,"0")
+
++
+
+String(i)
+.padStart(2,"0");
+
+
+
+t.innerHTML=code;
+
+t.dataset.code=code;
+
+
+
+tubeGrid.appendChild(t);
+
 
 
 }
 
 
 
+}
+
+
+
+
+
+
+
+
+
+function backRack(){
+
+
+boxPage.classList.add("hidden");
+
+
+rackPage.classList.remove("hidden");
+
+
+
+}
+
+
+
+
+
+function backBox(){
+
+
+tubePage.classList.add("hidden");
+
+
+boxPage.classList.remove("hidden");
+
+
+}
+
+
+
+
+
+
+
+
+
+// ======================
+// SMART SEARCH
+// ======================
 
 
 function searchData(){
@@ -558,8 +651,32 @@ let key =
 document
 .getElementById("search")
 .value
-.toLowerCase();
+.toUpperCase();
 
+
+
+
+// reset warna
+
+document
+.querySelectorAll(".rack,.box,.tube")
+.forEach(x=>{
+
+x.classList.remove("active");
+
+});
+
+
+
+if(key=="") return;
+
+
+
+
+
+// RAK
+
+if(key.startsWith("R")){
 
 
 document
@@ -567,17 +684,82 @@ document
 .forEach(r=>{
 
 
-r.classList.remove("active");
+if(r.innerText==key)
+
+r.classList.add("active");
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+// BOX
+
+if(key.startsWith("BOX")){
+
+
+document
+.querySelectorAll(".box")
+.forEach(b=>{
+
+
+if(b.innerText==key)
+
+b.classList.add("active");
+
+
+});
+
+}
+
+
+ 
+
+
+
+
+// TUBE
+// contoh C045034B0352
+
+
+let data =
+key.match(
+/C045(\d{2})(\d{2})B(\d{2})/
+);
+
+
+
+if(data){
+
+
+let rack =
+parseInt(data[1]);
+
+
+let box =
+parseInt(data[2]);
+
+
+
+// hijaukan rak
+
+
+document
+.querySelectorAll(".rack")
+.forEach(r=>{
 
 
 if(
-r.innerText
-.toLowerCase()
-.includes(key)
-&& key!=""
-)
-
-{
+r.innerText==
+"R"+rack
+){
 
 r.classList.add("active");
 
@@ -587,48 +769,90 @@ r.classList.add("active");
 });
 
 
+
+
+// buka rak
+
+openRack(rack);
+
+
+
+
+
+setTimeout(()=>{
+
+
+// box hijau
+
+
+document
+.querySelectorAll(".box")
+.forEach(b=>{
+
+
+if(
+b.innerText==
+"BOX "+box
+){
+
+b.classList.add("active");
+
+
+openBox(box);
+
+
+}
+
+});
+
+
+
+
+
+setTimeout(()=>{
+
+
+document
+.querySelectorAll(".tube")
+.forEach(t=>{
+
+
+if(
+t.innerText==key
+){
+
+t.classList.add("active");
+
+}
+
+
+});
+
+
+},200);
+
+
+
+},200);
+
+
+
+}
+
+
+
 }
 
 
 
 
 
-// CAMERA
 
+function camera(){
 
-function openCamera(){
-
-
-let camera =
-document.getElementById("cameraBox");
-
-
-camera.style.display="block";
-
-
-navigator.mediaDevices
-.getUserMedia({
-
-video:true
-
-})
-
-.then(stream=>{
-
-
-document
-.getElementById("video")
-.srcObject=stream;
-
-
-})
-
-
-.catch(()=>{
-
-alert("Kamera tidak tersedia");
-
-});
+alert(
+"Scanner QR siap diintegrasikan"
+);
 
 
 }
