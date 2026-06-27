@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="id">
-
+<html>
 <head>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Smart Biobank Freezer</title>
+<title>Smart Biobank</title>
 
 
 <style>
+
 
 *{
 box-sizing:border-box;
@@ -18,13 +18,12 @@ box-sizing:border-box;
 body{
 
 margin:0;
-font-family:"Segoe UI",Arial;
-background:#f2f8f4;
+font-family:Segoe UI,Arial;
+background:#f3f8f4;
 
 }
 
 
-/* HEADER */
 
 .header{
 
@@ -40,24 +39,18 @@ align-items:center;
 }
 
 
-
 .scan{
 
 width:65px;
 height:65px;
 
-border:none;
 border-radius:50%;
+border:0;
 
 font-size:30px;
 
-cursor:pointer;
-
 }
 
-
-
-/* SEARCH */
 
 
 .search{
@@ -67,25 +60,22 @@ padding:20px;
 }
 
 
-.search input{
+input{
 
 width:100%;
-
 height:60px;
 
 border-radius:18px;
 
 border:2px solid #087830;
 
-font-size:22px;
+font-size:20px;
 
 padding:15px;
 
 }
 
 
-
-/* CONTAINER */
 
 
 .container{
@@ -98,13 +88,9 @@ border-radius:25px;
 
 padding:20px;
 
-box-shadow:0 5px 15px #ddd;
-
 }
 
 
-
-/* GRID */
 
 
 .grid{
@@ -119,6 +105,7 @@ gap:10px;
 
 
 
+
 .rack,
 .box,
 .tube{
@@ -129,8 +116,9 @@ border-radius:12px;
 
 display:flex;
 
-justify-content:center;
 align-items:center;
+
+justify-content:center;
 
 cursor:pointer;
 
@@ -142,13 +130,11 @@ transition:.3s;
 
 
 
-
 .rack{
 
 height:70px;
 
 }
-
 
 
 .box{
@@ -164,8 +150,6 @@ height:80px;
 height:60px;
 
 font-size:12px;
-
-padding:5px;
 
 }
 
@@ -191,17 +175,156 @@ display:none;
 
 
 
+
 button{
+
+background:#087830;
+color:white;
+
+border:0;
+
+padding:12px 20px;
+
+border-radius:12px;
+
+}
+
+
+
+
+/* CRYOBOX */
+
+
+.cryoWrapper{
+
+display:grid;
+
+grid-template-columns:40px auto;
+
+gap:10px;
+
+}
+
+
+
+.axis{
+
+display:grid;
+
+grid-template-rows:repeat(10,60px);
+
+gap:5px;
+
+}
+
+
+
+.axis div{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-weight:bold;
+
+}
+
+
+
+.colAxis{
+
+display:grid;
+
+grid-template-columns:repeat(10,80px);
+
+gap:5px;
+
+margin-left:45px;
+
+margin-bottom:10px;
+
+}
+
+
+
+.tubeGrid{
+
+display:grid;
+
+grid-template-columns:repeat(10,80px);
+
+gap:5px;
+
+}
+
+
+
+
+
+
+/* PROFILE */
+
+
+.profile{
+
+position:fixed;
+
+top:50%;
+left:50%;
+
+transform:translate(-50%,-50%);
+
+width:350px;
+
+background:white;
+
+padding:20px;
+
+border-radius:25px;
+
+box-shadow:0 10px 30px #555;
+
+display:none;
+
+z-index:10;
+
+}
+
+
+
+.profile.show{
+
+display:block;
+
+}
+
+
+
+.profile img{
+
+width:120px;
+
+height:120px;
+
+border-radius:15px;
+
+object-fit:cover;
+
+}
+
+
+
+.close{
 
 background:#087830;
 
 color:white;
 
-border:none;
+padding:10px;
 
-padding:12px 20px;
-
-border-radius:12px;
+border-radius:10px;
 
 cursor:pointer;
 
@@ -209,13 +332,25 @@ cursor:pointer;
 
 
 
-@media(max-width:800px){
+
+@media(max-width:900px){
+
 
 .grid{
 
 grid-template-columns:repeat(5,1fr);
 
 }
+
+
+.tubeGrid,
+.colAxis{
+
+grid-template-columns:repeat(5,80px);
+
+}
+
+
 
 }
 
@@ -236,14 +371,14 @@ grid-template-columns:repeat(5,1fr);
 
 <div>
 
-<h1>🧬 SMART BIOBANK</h1>
+<h2>🧬 SMART BIOBANK</h2>
 
 <p>Thermo Scientific -80°C</p>
 
 </div>
 
 
-<button class="scan" onclick="camera()">
+<button class="scan">
 
 📷
 
@@ -256,7 +391,9 @@ grid-template-columns:repeat(5,1fr);
 
 
 
+
 <div class="search">
+
 
 <input
 
@@ -267,7 +404,10 @@ placeholder="Cari tube / box / rak"
 onkeyup="searchData()">
 
 
+
 </div>
+
+
 
 
 
@@ -277,7 +417,6 @@ onkeyup="searchData()">
 
 
 
-<!-- RAK -->
 
 
 <div id="rackPage">
@@ -288,7 +427,8 @@ onkeyup="searchData()">
 </h2>
 
 
-<div id="rackGrid" class="grid">
+<div id="rackGrid"
+class="grid">
 
 </div>
 
@@ -301,10 +441,8 @@ onkeyup="searchData()">
 
 
 
-<!-- BOX -->
-
-
-<div id="boxPage" class="hidden">
+<div id="boxPage"
+class="hidden">
 
 
 <button onclick="backRack()">
@@ -317,11 +455,14 @@ onkeyup="searchData()">
 <h2 id="rackTitle"></h2>
 
 
-<div id="boxGrid" class="grid">
+<div id="boxGrid"
+class="grid">
+
 
 </div>
 
 
+
 </div>
 
 
@@ -331,11 +472,8 @@ onkeyup="searchData()">
 
 
 
-
-<!-- TUBE -->
-
-
-<div id="tubePage" class="hidden">
+<div id="tubePage"
+class="hidden">
 
 
 <button onclick="backBox()">
@@ -348,7 +486,52 @@ onkeyup="searchData()">
 <h2 id="boxTitle"></h2>
 
 
-<div id="tubeGrid" class="grid">
+
+<div class="colAxis">
+
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<div>4</div>
+<div>5</div>
+<div>6</div>
+<div>7</div>
+<div>8</div>
+<div>9</div>
+<div>10</div>
+
+
+</div>
+
+
+
+
+<div class="cryoWrapper">
+
+
+<div class="axis">
+
+
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<div>4</div>
+<div>5</div>
+<div>6</div>
+<div>7</div>
+<div>8</div>
+<div>9</div>
+<div>10</div>
+
+
+</div>
+
+
+
+
+<div id="tubeGrid"
+class="tubeGrid">
+
 
 </div>
 
@@ -358,6 +541,46 @@ onkeyup="searchData()">
 
 
 </div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<div id="profile"
+class="profile">
+
+
+<img src="https://via.placeholder.com/120">
+
+
+<h2>Identitas Tube</h2>
+
+
+<p id="tubeInfo"></p>
+
+
+<div onclick="closeProfile()"
+class="close">
+
+Tutup
+
+</div>
+
+
+
+</div>
+
+
 
 
 
@@ -368,8 +591,8 @@ onkeyup="searchData()">
 <script>
 
 
-let currentRack;
 
+let currentRack;
 let currentBox;
 
 
@@ -403,36 +626,30 @@ document.getElementById("tubeGrid");
 
 
 
-// ======================
-// CREATE RAK 1-100
-// ======================
+
+// RAK 1-100
 
 
 for(let i=1;i<=100;i++){
 
 
-let r =
-document.createElement("div");
+let r=document.createElement("div");
 
 
 r.className="rack";
+
 
 r.innerHTML="R"+i;
 
 
 
-r.onclick=function(){
-
-openRack(i);
-
-}
+r.onclick=()=>openRack(i);
 
 
 
 rackGrid.appendChild(r);
 
 
-
 }
 
 
@@ -441,24 +658,20 @@ rackGrid.appendChild(r);
 
 
 
-function openRack(number){
+
+function openRack(r){
 
 
-currentRack=number;
-
+currentRack=r;
 
 
 rackPage.classList.add("hidden");
 
-
 boxPage.classList.remove("hidden");
 
 
-document
-.getElementById("rackTitle")
-.innerHTML=
-"RAK "+number;
-
+rackTitle.innerHTML=
+"RAK "+r;
 
 
 
@@ -469,24 +682,15 @@ boxGrid.innerHTML="";
 for(let i=1;i<=10;i++){
 
 
-let b =
-document.createElement("div");
+let b=document.createElement("div");
 
 
 b.className="box";
 
-b.innerHTML=
-"BOX "+i;
+b.innerHTML="BOX "+i;
 
 
-b.dataset.box=i;
-
-
-b.onclick=function(){
-
-openBox(i);
-
-}
+b.onclick=()=>openBox(i);
 
 
 
@@ -506,11 +710,10 @@ boxGrid.appendChild(b);
 
 
 
-function openBox(number){
+function openBox(b){
 
 
-currentBox=number;
-
+currentBox=b;
 
 
 boxPage.classList.add("hidden");
@@ -520,14 +723,11 @@ tubePage.classList.remove("hidden");
 
 
 
-document
-.getElementById("boxTitle")
-.innerHTML=
-
+boxTitle.innerHTML=
 "RAK "
 +currentRack+
 " BOX "
-+number;
++b;
 
 
 
@@ -536,53 +736,54 @@ tubeGrid.innerHTML="";
 
 
 
-// 100 tube
+for(let row=1;row<=10;row++){
 
 
-for(let i=1;i<=100;i++){
+for(let col=1;col<=10;col++){
 
 
-let t =
-document.createElement("div");
+
+let index=
+(row-1)*10+col;
+
+
+
+let t=document.createElement("div");
 
 
 t.className="tube";
 
 
 
-let code =
+let code=
 
 "C045"
 
-+
++String(currentRack).padStart(2,"0")
 
-String(currentRack)
-.padStart(2,"0")
++String(currentBox).padStart(2,"0")
 
-+
++"B"
 
-String(number)
-.padStart(2,"0")
-
-+
-
-"B"
-
-+
-
-String(number)
-.padStart(2,"0")
-
-+
-
-String(i)
-.padStart(2,"0");
++String(index).padStart(2,"0");
 
 
 
-t.innerHTML=code;
+
+t.innerHTML=index;
+
+
 
 t.dataset.code=code;
+
+
+
+t.onclick=()=>showTube(
+code,
+row,
+col,
+t
+);
 
 
 
@@ -592,6 +793,7 @@ tubeGrid.appendChild(t);
 
 }
 
+}
 
 
 }
@@ -599,6 +801,79 @@ tubeGrid.appendChild(t);
 
 
 
+
+
+
+
+
+function showTube(code,row,col,el){
+
+
+document
+.querySelectorAll(".tube")
+.forEach(x=>x.classList.remove("active"));
+
+
+
+el.classList.add("active");
+
+
+
+tubeInfo.innerHTML=
+
+`
+<b>ID Tube:</b> ${code}
+
+<br><br>
+
+<b>Freezer:</b>
+-80°C C
+
+<br>
+
+<b>Rak:</b>
+${currentRack}
+
+<br>
+
+<b>Box:</b>
+${currentBox}
+
+<br>
+
+<b>Posisi:</b>
+Baris ${row}
+Kolom ${col}
+
+<br><br>
+
+<b>Sampel:</b>
+Plasma EDTA
+
+<br>
+
+<b>Status:</b>
+🟢 Tersimpan
+
+`;
+
+
+
+profile.classList.add("show");
+
+
+
+}
+
+
+
+
+
+function closeProfile(){
+
+profile.classList.remove("show");
+
+}
 
 
 
@@ -606,28 +881,20 @@ tubeGrid.appendChild(t);
 
 function backRack(){
 
-
 boxPage.classList.add("hidden");
-
 
 rackPage.classList.remove("hidden");
 
-
-
 }
-
 
 
 
 
 function backBox(){
 
-
 tubePage.classList.add("hidden");
 
-
 boxPage.classList.remove("hidden");
-
 
 }
 
@@ -639,24 +906,13 @@ boxPage.classList.remove("hidden");
 
 
 
-// ======================
-// SMART SEARCH
-// ======================
-
-
 function searchData(){
 
 
-let key =
-document
-.getElementById("search")
-.value
-.toUpperCase();
+let key=
+search.value.toUpperCase();
 
 
-
-
-// reset warna
 
 document
 .querySelectorAll(".rack,.box,.tube")
@@ -668,144 +924,63 @@ x.classList.remove("active");
 
 
 
-if(key=="") return;
+if(!key)return;
 
 
 
 
 
-// RAK
-
-if(key.startsWith("R")){
-
-
-document
-.querySelectorAll(".rack")
-.forEach(r=>{
-
-
-if(r.innerText==key)
-
-r.classList.add("active");
-
-
-});
-
-
-}
-
-
-
-
-
-
-
-// BOX
-
-if(key.startsWith("BOX")){
-
-
-document
-.querySelectorAll(".box")
-.forEach(b=>{
-
-
-if(b.innerText==key)
-
-b.classList.add("active");
-
-
-});
-
-}
-
-
- 
-
-
-
-
-// TUBE
-// contoh C045034B0352
-
-
-let data =
-key.match(
-/C045(\d{2})(\d{2})B(\d{2})/
-);
+let data=
+key.match(/C045(\d{2})(\d{2})B(\d{2})/);
 
 
 
 if(data){
 
 
-let rack =
-parseInt(data[1]);
+let r=parseInt(data[1]);
 
-
-let box =
-parseInt(data[2]);
+let b=parseInt(data[2]);
 
 
 
-// hijaukan rak
 
 
 document
 .querySelectorAll(".rack")
-.forEach(r=>{
+.forEach(x=>{
 
 
-if(
-r.innerText==
-"R"+rack
-){
+if(x.innerHTML=="R"+r)
 
-r.classList.add("active");
-
-}
+x.classList.add("active");
 
 
 });
 
 
 
-
-// buka rak
-
-openRack(rack);
-
-
+openRack(r);
 
 
 
 setTimeout(()=>{
 
 
-// box hijau
-
-
 document
 .querySelectorAll(".box")
-.forEach(b=>{
+.forEach(x=>{
 
 
-if(
-b.innerText==
-"BOX "+box
-){
+if(x.innerHTML=="BOX "+b)
 
-b.classList.add("active");
+x.classList.add("active");
 
-
-openBox(box);
-
-
-}
 
 });
 
 
+openBox(b);
 
 
 
@@ -814,16 +989,12 @@ setTimeout(()=>{
 
 document
 .querySelectorAll(".tube")
-.forEach(t=>{
+.forEach(x=>{
 
 
-if(
-t.innerText==key
-){
+if(x.dataset.code==key)
 
-t.classList.add("active");
-
-}
+x.classList.add("active");
 
 
 });
@@ -848,20 +1019,8 @@ t.classList.add("active");
 
 
 
-function camera(){
-
-alert(
-"Scanner QR siap diintegrasikan"
-);
-
-
-}
-
-
-
 </script>
 
 
 </body>
-
 </html>
