@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-<html lang="id">
-
+<html>
 <head>
-
-<meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -12,20 +9,17 @@
 
 <style>
 
-
 *{
 box-sizing:border-box;
 }
 
-
 body{
 
 margin:0;
-font-family:"Segoe UI",Arial,sans-serif;
+font-family:Segoe UI,Arial;
 background:#f3f8f4;
 
 }
-
 
 
 /* HEADER */
@@ -35,33 +29,18 @@ background:#f3f8f4;
 background:#087830;
 color:white;
 
-height:95px;
+padding:20px;
 
 display:flex;
 justify-content:space-between;
 align-items:center;
 
-padding:20px;
-
-box-shadow:0 4px 12px #999;
-
 }
 
 
 .header h1{
-
 margin:0;
-font-size:28px;
-
 }
-
-
-.header p{
-
-margin:5px 0;
-
-}
-
 
 
 .scan{
@@ -70,12 +49,9 @@ width:65px;
 height:65px;
 
 border-radius:50%;
-
 border:none;
 
-font-size:32px;
-
-background:white;
+font-size:30px;
 
 cursor:pointer;
 
@@ -83,8 +59,27 @@ cursor:pointer;
 
 
 
-/* SEARCH */
+/* CAMERA */
 
+#cameraBox{
+
+display:none;
+
+background:#000;
+padding:10px;
+
+}
+
+video{
+
+width:100%;
+border-radius:20px;
+
+}
+
+
+
+/* SEARCH */
 
 .search{
 
@@ -93,17 +88,16 @@ padding:20px;
 }
 
 
-.search input{
+input{
 
 width:100%;
+height:55px;
 
-height:60px;
-
-font-size:22px;
-
-border-radius:18px;
+border-radius:15px;
 
 border:2px solid #087830;
+
+font-size:20px;
 
 padding:15px;
 
@@ -113,25 +107,22 @@ padding:15px;
 
 /* FREEZER */
 
-
 .freezer{
-
-margin:20px;
 
 background:white;
 
-border-radius:25px;
+margin:20px;
 
 padding:20px;
 
-box-shadow:0 5px 15px #ddd;
+border-radius:25px;
 
 }
 
 
 .title{
 
-font-size:24px;
+font-size:25px;
 
 font-weight:bold;
 
@@ -141,35 +132,49 @@ color:#087830;
 
 
 
-/* RACK */
+/* GRID RAK */
 
 
-.racks{
+.rackGrid{
 
 display:grid;
 
-grid-template-columns:repeat(3,1fr);
+grid-template-columns:repeat(10,1fr);
 
-gap:20px;
+gap:10px;
 
 margin-top:20px;
 
 }
 
 
+
 .rack{
 
-background:#ffffff;
+height:70px;
 
-border-radius:20px;
+background:#e9f5ec;
 
-padding:20px;
+border-radius:12px;
 
-box-shadow:0 4px 12px #ddd;
+display:flex;
 
-transition:.4s;
+align-items:center;
+justify-content:center;
+
+font-weight:bold;
 
 cursor:pointer;
+
+transition:.3s;
+
+}
+
+
+
+.rack:hover{
+
+transform:scale(1.05);
 
 }
 
@@ -181,36 +186,25 @@ background:#00a651;
 
 color:white;
 
-transform:scale(1.04);
-
 }
 
 
 
-.rack h2{
 
-margin:0;
-
-}
+/* DETAIL RAK */
 
 
-
-/* BOX */
-
-
-.boxes{
+.detail{
 
 display:none;
 
-margin-top:15px;
-
-animation:open .4s;
+animation:open .5s;
 
 }
 
 
 
-.rack.open .boxes{
+.detail.show{
 
 display:block;
 
@@ -218,17 +212,49 @@ display:block;
 
 
 
-.box{
+.back{
 
-background:#e8f5ec;
+background:#087830;
+color:white;
 
-padding:18px;
-
-margin:10px 0;
+padding:12px 20px;
 
 border-radius:15px;
 
-text-align:center;
+display:inline-block;
+
+cursor:pointer;
+
+margin-bottom:20px;
+
+}
+
+
+
+.boxGrid{
+
+display:grid;
+
+grid-template-columns:repeat(10,1fr);
+
+gap:10px;
+
+}
+
+
+
+.box{
+
+height:70px;
+
+background:#e9f5ec;
+
+border-radius:12px;
+
+display:flex;
+
+align-items:center;
+justify-content:center;
 
 font-weight:bold;
 
@@ -239,50 +265,51 @@ font-weight:bold;
 .box.target{
 
 background:#00a651;
-
 color:white;
 
 }
 
 
 
-
 @keyframes open{
 
 
-0%{
+from{
 
 opacity:0;
-transform:translateY(-20px);
+transform:translateY(30px);
 
 }
 
-
-100%{
+to{
 
 opacity:1;
 transform:translateY(0);
 
 }
 
-
 }
 
 
 
 
-@media(max-width:900px){
+@media(max-width:800px){
 
 
-.racks{
+.rackGrid{
 
-grid-template-columns:1fr;
-
-}
-
+grid-template-columns:repeat(5,1fr);
 
 }
 
+
+.boxGrid{
+
+grid-template-columns:repeat(5,1fr);
+
+}
+
+}
 
 
 </style>
@@ -300,13 +327,12 @@ grid-template-columns:1fr;
 
 <h1>🧬 SMART BIOBANK</h1>
 
-<p>Thermo Scientific Freezer -80°C</p>
+<p>Thermo Scientific -80°C</p>
 
 </div>
 
 
-
-<button class="scan">
+<button class="scan" onclick="openCamera()">
 
 📷
 
@@ -317,14 +343,21 @@ grid-template-columns:1fr;
 
 
 
-<div class="search">
+<div id="cameraBox">
 
+<video id="video" autoplay></video>
+
+</div>
+
+
+
+<div class="search">
 
 <input
 
 id="search"
 
-placeholder="Cari sample / rak / box..."
+placeholder="Cari rak / box..."
 
 onkeyup="searchData()">
 
@@ -346,78 +379,53 @@ onkeyup="searchData()">
 
 
 
+<!-- GRID RAK -->
 
-<div class="racks">
-
-
-
-<div class="rack">
-
-<h2>Rak A</h2>
-
-<div class="boxes">
-
-<div class="box">BOX 01</div>
-<div class="box">BOX 02</div>
-<div class="box">BOX 03</div>
-<div class="box">BOX 04</div>
-<div class="box">BOX 05</div>
+<div id="rackView">
 
 
-</div>
-
-</div>
-
-
-
-
-
-<div class="rack">
-
-<h2>Rak B</h2>
-
-<div class="boxes">
-
-<div class="box">BOX 01</div>
-<div class="box">BOX 02</div>
-<div class="box">BOX 03</div>
-<div class="box">BOX 04</div>
-<div class="box">BOX 05</div>
-
-
-</div>
-
-</div>
-
-
-
-
-
-
-<div class="rack">
-
-<h2>Rak C</h2>
-
-<div class="boxes">
-
-<div class="box">BOX 01</div>
-<div class="box">BOX 02</div>
-<div class="box">BOX 03</div>
-<div class="box">BOX 04</div>
-<div class="box">BOX 05</div>
-
-
-</div>
-
-</div>
-
-
+<div class="rackGrid" id="rackGrid">
 
 
 </div>
 
 
 </div>
+
+
+
+
+
+
+<!-- DETAIL -->
+
+<div id="detail" class="detail">
+
+
+<div class="back" onclick="backRack()">
+
+⬅ Kembali Rak
+
+</div>
+
+
+
+<h2 id="rackTitle"></h2>
+
+
+
+<div class="boxGrid" id="boxGrid">
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
 
 
 
@@ -426,31 +434,118 @@ onkeyup="searchData()">
 <script>
 
 
-const racks =
-document.querySelectorAll(".rack");
+let rackGrid =
+document.getElementById("rackGrid");
+
+let detail =
+document.getElementById("detail");
+
+
+let boxGrid =
+document.getElementById("boxGrid");
+
+let selectedRack="";
 
 
 
-racks.forEach(rack=>{
 
 
-rack.onclick=function(){
+// buat rak 1-100
+
+for(let i=1;i<=100;i++){
 
 
-racks.forEach(r=>{
-
-r.classList.remove("open");
-
-});
+let r =
+document.createElement("div");
 
 
-rack.classList.toggle("open");
+r.className="rack";
+
+r.innerHTML=
+"R"+i;
+
+
+r.onclick=function(){
+
+openRack(i);
+
+}
+
+
+rackGrid.appendChild(r);
 
 
 }
 
 
-});
+
+
+
+function openRack(number){
+
+
+selectedRack=number;
+
+
+document
+.getElementById("rackView")
+.style.display="none";
+
+
+detail.classList.add("show");
+
+
+document
+.getElementById("rackTitle")
+.innerHTML=
+"Rak "+number;
+
+
+
+boxGrid.innerHTML="";
+
+
+// buat 10 box
+
+for(let i=1;i<=10;i++){
+
+
+let b =
+document.createElement("div");
+
+
+b.className="box";
+
+b.innerHTML=
+"BOX "+i;
+
+
+
+boxGrid.appendChild(b);
+
+
+}
+
+
+
+}
+
+
+
+
+
+function backRack(){
+
+
+detail.classList.remove("show");
+
+
+document
+.getElementById("rackView")
+.style.display="block";
+
+
+}
 
 
 
@@ -459,7 +554,7 @@ rack.classList.toggle("open");
 function searchData(){
 
 
-let keyword =
+let key =
 document
 .getElementById("search")
 .value
@@ -467,60 +562,71 @@ document
 
 
 
-racks.forEach(rack=>{
+document
+.querySelectorAll(".rack")
+.forEach(r=>{
 
 
-rack.classList.remove("active");
-
-
-let boxes =
-rack.querySelectorAll(".box");
-
-
-
-boxes.forEach(b=>{
-
-b.classList.remove("target");
-
-});
-
-
-
-
-if(keyword.length>0 &&
-
-rack.innerText
-.toLowerCase()
-.includes(keyword)
-
-){
-
-
-rack.classList.add("active");
-
-rack.classList.add("open");
-
-
-
-boxes.forEach(box=>{
+r.classList.remove("active");
 
 
 if(
-box.innerText
+r.innerText
 .toLowerCase()
-.includes(keyword)
+.includes(key)
+&& key!=""
+)
 
-){
+{
 
-box.classList.add("target");
+r.classList.add("active");
 
 }
 
 
 });
 
+
 }
 
+
+
+
+
+// CAMERA
+
+
+function openCamera(){
+
+
+let camera =
+document.getElementById("cameraBox");
+
+
+camera.style.display="block";
+
+
+navigator.mediaDevices
+.getUserMedia({
+
+video:true
+
+})
+
+.then(stream=>{
+
+
+document
+.getElementById("video")
+.srcObject=stream;
+
+
+})
+
+
+.catch(()=>{
+
+alert("Kamera tidak tersedia");
 
 });
 
@@ -530,7 +636,6 @@ box.classList.add("target");
 
 
 </script>
-
 
 
 </body>
