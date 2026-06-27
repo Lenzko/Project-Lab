@@ -10,11 +10,17 @@
 
 <style>
 
+*{
+box-sizing:border-box;
+}
+
 
 body{
+
 margin:0;
-font-family:Segoe UI;
+font-family:Segoe UI,Arial;
 background:#f3f8f4;
+
 }
 
 
@@ -28,20 +34,25 @@ padding:20px;
 
 display:flex;
 justify-content:space-between;
+align-items:center;
 
 }
 
 
-button{
+.scan{
 
-background:#087830;
-color:white;
+width:85px;
+height:85px;
+
+border-radius:50%;
 
 border:0;
 
-padding:12px;
+font-size:45px;
 
-border-radius:10px;
+background:white;
+
+cursor:pointer;
 
 }
 
@@ -57,15 +68,29 @@ padding:20px;
 input{
 
 width:100%;
-height:55px;
+height:60px;
 
-font-size:18px;
+font-size:20px;
 
 border-radius:15px;
 
 border:2px solid #087830;
 
-padding:10px;
+padding:15px;
+
+}
+
+
+
+#cameraView{
+
+display:none;
+
+width:100%;
+
+border-radius:20px;
+
+margin:20px;
 
 }
 
@@ -80,10 +105,9 @@ background:white;
 
 padding:20px;
 
-border-radius:20px;
+border-radius:25px;
 
 }
-
 
 
 
@@ -129,6 +153,7 @@ height:70px;
 }
 
 
+
 .box{
 
 height:80px;
@@ -153,6 +178,7 @@ text-align:center;
 
 
 
+
 .active{
 
 background:#00a651!important;
@@ -171,7 +197,61 @@ display:none;
 
 
 
-/* CRYO */
+
+button{
+
+background:#087830;
+
+color:white;
+
+border:0;
+
+padding:12px 20px;
+
+border-radius:12px;
+
+}
+
+
+
+
+
+/* nomor atas */
+
+
+.col{
+
+display:grid;
+
+grid-template-columns:repeat(10,100px);
+
+gap:5px;
+
+margin-left:48px;
+
+margin-bottom:10px;
+
+}
+
+
+
+.col div{
+
+height:25px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-weight:bold;
+
+}
+
+
+
+
 
 .cryo{
 
@@ -182,6 +262,7 @@ grid-template-columns:40px auto;
 gap:8px;
 
 }
+
 
 
 
@@ -210,22 +291,6 @@ font-weight:bold;
 
 
 
-.col{
-
-display:grid;
-
-grid-template-columns:repeat(10,100px);
-
-margin-left:45px;
-
-gap:5px;
-
-margin-bottom:5px;
-
-}
-
-
-
 .tubeGrid{
 
 display:grid;
@@ -245,15 +310,18 @@ gap:5px;
 position:fixed;
 
 top:50%;
+
 left:50%;
 
+
 transform:translate(-50%,-50%);
+
 
 background:white;
 
 padding:25px;
 
-width:330px;
+width:350px;
 
 border-radius:20px;
 
@@ -261,7 +329,10 @@ box-shadow:0 10px 30px #555;
 
 display:none;
 
+z-index:10;
+
 }
+
 
 
 .profile.show{
@@ -274,10 +345,14 @@ display:block;
 
 </style>
 
+
 </head>
 
 
+
+
 <body>
+
 
 
 
@@ -289,12 +364,25 @@ display:block;
 </h2>
 
 
-<button onclick="camera()">
+<button class="scan" onclick="camera()">
+
 📷
+
 </button>
 
 
 </div>
+
+
+
+<video id="cameraView"
+autoplay
+playsinline>
+
+</video>
+
+
+
 
 
 
@@ -322,6 +410,9 @@ onkeyup="searchTube()">
 
 
 
+
+
+
 <div id="rackPage">
 
 
@@ -336,7 +427,9 @@ class="grid">
 </div>
 
 
+
 </div>
+
 
 
 
@@ -385,8 +478,9 @@ class="hidden">
 </button>
 
 
-
 <h2 id="boxTitle"></h2>
+
+
 
 
 
@@ -404,6 +498,8 @@ class="hidden">
 <div>10</div>
 
 </div>
+
+
 
 
 
@@ -430,6 +526,7 @@ class="hidden">
 
 
 
+
 <div id="tubeGrid"
 class="tubeGrid">
 
@@ -442,7 +539,6 @@ class="tubeGrid">
 
 
 </div>
-
 
 
 
@@ -473,6 +569,7 @@ Tutup
 </button>
 
 
+
 </div>
 
 
@@ -486,15 +583,14 @@ Tutup
 <script>
 
 
-
 let currentRack;
-
 let currentBox;
 
 
 
 const rackGrid =
 document.getElementById("rackGrid");
+
 
 
 const rackPage =
@@ -509,7 +605,6 @@ const tubePage =
 document.getElementById("tubePage");
 
 
-
 const boxGrid =
 document.getElementById("boxGrid");
 
@@ -522,15 +617,12 @@ document.getElementById("tubeGrid");
 
 
 
-
-
 // RAK 1-100
 
 for(let i=1;i<=100;i++){
 
 
-let r =
-document.createElement("div");
+let r=document.createElement("div");
 
 
 r.className="rack";
@@ -538,9 +630,7 @@ r.className="rack";
 r.innerHTML="R"+i;
 
 
-
 r.onclick=()=>openRack(i);
-
 
 
 rackGrid.appendChild(r);
@@ -581,16 +671,12 @@ boxGrid.innerHTML="";
 for(let i=1;i<=10;i++){
 
 
-let b =
-document.createElement("div");
+let b=document.createElement("div");
 
 
 b.className="box";
 
-
-b.innerHTML=
-"BOX "+i;
-
+b.innerHTML="BOX "+i;
 
 
 b.onclick=()=>openBox(i);
@@ -600,10 +686,14 @@ b.onclick=()=>openBox(i);
 boxGrid.appendChild(b);
 
 
+
 }
 
 
+
 }
+
+
 
 
 
@@ -617,12 +707,10 @@ function openBox(b){
 currentBox=b;
 
 
-
 boxPage.classList.add("hidden");
 
 
 tubePage.classList.remove("hidden");
-
 
 
 
@@ -640,21 +728,18 @@ tubeGrid.innerHTML="";
 
 
 
-
 for(let row=1;row<=10;row++){
 
 
 for(let col=1;col<=10;col++){
 
 
-let pos =
-(row-1)*10+col;
+
+let pos=(row-1)*10+col;
 
 
 
-
-
-let code =
+let code=
 
 "C045"
 
@@ -681,18 +766,13 @@ String(pos)
 
 
 
-
-let t =
-document.createElement("div");
-
+let t=document.createElement("div");
 
 
 t.className="tube";
 
 
-
 t.innerHTML=code;
-
 
 
 t.dataset.code=code;
@@ -708,18 +788,17 @@ t
 
 
 
-
 tubeGrid.appendChild(t);
 
 
 
 }
 
-
 }
 
 
 }
+
 
 
 
@@ -744,7 +823,9 @@ t.classList.add("active");
 info.innerHTML=
 
 `
+
 <b>ID Tube</b><br>
+
 ${code}
 
 <br><br>
@@ -765,12 +846,15 @@ ${currentBox}
 <br>
 
 Posisi:
+
 Baris ${row}
+
 Kolom ${col}
 
 <br><br>
 
 Status:
+
 🟢 Tersimpan
 
 `;
@@ -780,9 +864,7 @@ Status:
 profile.classList.add("show");
 
 
-
 }
-
 
 
 
@@ -793,8 +875,6 @@ function closeProfile(){
 profile.classList.remove("show");
 
 }
-
-
 
 
 
@@ -829,14 +909,8 @@ boxPage.classList.remove("hidden");
 function searchTube(){
 
 
-let key =
+let key=
 search.value.toUpperCase();
-
-
-
-document
-.querySelectorAll(".rack,.box,.tube")
-.forEach(x=>x.classList.remove("active"));
 
 
 
@@ -847,31 +921,27 @@ key.match(
 
 
 
-
 if(!data)return;
 
 
 
 
-let rack =
-parseInt(data[1]);
+let rack=parseInt(data[1]);
 
-
-let box =
-parseInt(data[2]);
+let box=parseInt(data[2]);
 
 
 
-
-// rak hijau
 
 document
 .querySelectorAll(".rack")
 .forEach(x=>{
 
+
 if(x.innerHTML=="R"+rack)
 
 x.classList.add("active");
+
 
 });
 
@@ -881,22 +951,7 @@ openRack(rack);
 
 
 
-
 setTimeout(()=>{
-
-
-document
-.querySelectorAll(".box")
-.forEach(x=>{
-
-
-if(x.innerHTML=="BOX "+box)
-
-x.classList.add("active");
-
-
-});
-
 
 
 openBox(box);
@@ -919,7 +974,6 @@ x.classList.add("active");
 });
 
 
-
 },300);
 
 
@@ -929,6 +983,8 @@ x.classList.add("active");
 
 
 }
+
+
 
 
 
@@ -937,13 +993,51 @@ x.classList.add("active");
 
 function camera(){
 
-alert("QR Scanner siap");
+
+
+let video =
+document.getElementById("cameraView");
+
+
+
+video.style.display="block";
+
+
+
+navigator.mediaDevices
+.getUserMedia({
+
+video:{
+facingMode:"user"
+}
+
+})
+
+
+.then(stream=>{
+
+
+video.srcObject=stream;
+
+
+})
+
+
+.catch(()=>{
+
+alert(
+"Kamera tidak dapat dibuka"
+);
+
+});
+
 
 }
 
 
 
 </script>
+
 
 
 </body>
