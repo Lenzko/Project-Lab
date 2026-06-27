@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,17 +11,10 @@
 <style>
 
 
-*{
-box-sizing:border-box;
-}
-
-
 body{
-
 margin:0;
-font-family:Segoe UI,Arial;
+font-family:Segoe UI;
 background:#f3f8f4;
-
 }
 
 
@@ -34,20 +28,20 @@ padding:20px;
 
 display:flex;
 justify-content:space-between;
-align-items:center;
 
 }
 
 
-.scan{
+button{
 
-width:65px;
-height:65px;
+background:#087830;
+color:white;
 
-border-radius:50%;
 border:0;
 
-font-size:30px;
+padding:12px;
+
+border-radius:10px;
 
 }
 
@@ -63,15 +57,15 @@ padding:20px;
 input{
 
 width:100%;
-height:60px;
+height:55px;
 
-border-radius:18px;
+font-size:18px;
+
+border-radius:15px;
 
 border:2px solid #087830;
 
-font-size:20px;
-
-padding:15px;
+padding:10px;
 
 }
 
@@ -84,9 +78,9 @@ margin:20px;
 
 background:white;
 
-border-radius:25px;
-
 padding:20px;
+
+border-radius:20px;
 
 }
 
@@ -116,15 +110,13 @@ border-radius:12px;
 
 display:flex;
 
-align-items:center;
-
 justify-content:center;
+
+align-items:center;
 
 cursor:pointer;
 
 font-weight:bold;
-
-transition:.3s;
 
 }
 
@@ -147,9 +139,15 @@ height:80px;
 
 .tube{
 
-height:60px;
+height:65px;
 
-font-size:12px;
+font-size:10px;
+
+padding:5px;
+
+overflow:hidden;
+
+text-align:center;
 
 }
 
@@ -159,9 +157,7 @@ font-size:12px;
 
 background:#00a651!important;
 
-color:white!important;
-
-transform:scale(1.05);
+color:white;
 
 }
 
@@ -175,33 +171,15 @@ display:none;
 
 
 
+/* CRYO */
 
-button{
-
-background:#087830;
-color:white;
-
-border:0;
-
-padding:12px 20px;
-
-border-radius:12px;
-
-}
-
-
-
-
-/* CRYOBOX */
-
-
-.cryoWrapper{
+.cryo{
 
 display:grid;
 
 grid-template-columns:40px auto;
 
-gap:10px;
+gap:8px;
 
 }
 
@@ -211,9 +189,7 @@ gap:10px;
 
 display:grid;
 
-grid-template-rows:repeat(10,60px);
-
-gap:5px;
+grid-template-rows:repeat(10,65px);
 
 }
 
@@ -223,9 +199,9 @@ gap:5px;
 
 display:flex;
 
-justify-content:center;
-
 align-items:center;
+
+justify-content:center;
 
 font-weight:bold;
 
@@ -233,17 +209,18 @@ font-weight:bold;
 
 
 
-.colAxis{
+
+.col{
 
 display:grid;
 
-grid-template-columns:repeat(10,80px);
-
-gap:5px;
+grid-template-columns:repeat(10,100px);
 
 margin-left:45px;
 
-margin-bottom:10px;
+gap:5px;
+
+margin-bottom:5px;
 
 }
 
@@ -253,7 +230,7 @@ margin-bottom:10px;
 
 display:grid;
 
-grid-template-columns:repeat(10,80px);
+grid-template-columns:repeat(10,100px);
 
 gap:5px;
 
@@ -261,10 +238,6 @@ gap:5px;
 
 
 
-
-
-
-/* PROFILE */
 
 
 .profile{
@@ -276,22 +249,19 @@ left:50%;
 
 transform:translate(-50%,-50%);
 
-width:350px;
-
 background:white;
 
-padding:20px;
+padding:25px;
 
-border-radius:25px;
+width:330px;
+
+border-radius:20px;
 
 box-shadow:0 10px 30px #555;
 
 display:none;
 
-z-index:10;
-
 }
-
 
 
 .profile.show{
@@ -302,64 +272,9 @@ display:block;
 
 
 
-.profile img{
-
-width:120px;
-
-height:120px;
-
-border-radius:15px;
-
-object-fit:cover;
-
-}
-
-
-
-.close{
-
-background:#087830;
-
-color:white;
-
-padding:10px;
-
-border-radius:10px;
-
-cursor:pointer;
-
-}
-
-
-
-
-@media(max-width:900px){
-
-
-.grid{
-
-grid-template-columns:repeat(5,1fr);
-
-}
-
-
-.tubeGrid,
-.colAxis{
-
-grid-template-columns:repeat(5,80px);
-
-}
-
-
-
-}
-
-
-
 </style>
 
 </head>
-
 
 
 <body>
@@ -369,25 +284,17 @@ grid-template-columns:repeat(5,80px);
 <div class="header">
 
 
-<div>
-
-<h2>🧬 SMART BIOBANK</h2>
-
-<p>Thermo Scientific -80°C</p>
-
-</div>
+<h2>
+🧬 SMART BIOBANK
+</h2>
 
 
-<button class="scan">
-
+<button onclick="camera()">
 📷
-
 </button>
 
 
 </div>
-
-
 
 
 
@@ -399,9 +306,9 @@ grid-template-columns:repeat(5,80px);
 
 id="search"
 
-placeholder="Cari tube / box / rak"
+placeholder="Cari kode tube..."
 
-onkeyup="searchData()">
+onkeyup="searchTube()">
 
 
 
@@ -411,11 +318,7 @@ onkeyup="searchData()">
 
 
 
-
-
 <div class="container">
-
-
 
 
 
@@ -458,12 +361,11 @@ class="hidden">
 <div id="boxGrid"
 class="grid">
 
-
 </div>
 
 
-
 </div>
+
 
 
 
@@ -483,11 +385,12 @@ class="hidden">
 </button>
 
 
+
 <h2 id="boxTitle"></h2>
 
 
 
-<div class="colAxis">
+<div class="col">
 
 <div>1</div>
 <div>2</div>
@@ -499,18 +402,17 @@ class="hidden">
 <div>8</div>
 <div>9</div>
 <div>10</div>
-
 
 </div>
 
 
 
 
-<div class="cryoWrapper">
+
+<div class="cryo">
 
 
 <div class="axis">
-
 
 <div>1</div>
 <div>2</div>
@@ -522,7 +424,6 @@ class="hidden">
 <div>8</div>
 <div>9</div>
 <div>10</div>
-
 
 </div>
 
@@ -532,16 +433,15 @@ class="hidden">
 <div id="tubeGrid"
 class="tubeGrid">
 
-
-</div>
-
-
 </div>
 
 
 
 </div>
 
+
+
+</div>
 
 
 
@@ -560,22 +460,17 @@ class="tubeGrid">
 class="profile">
 
 
-<img src="https://via.placeholder.com/120">
-
-
 <h2>Identitas Tube</h2>
 
 
-<p id="tubeInfo"></p>
+<p id="info"></p>
 
 
-<div onclick="closeProfile()"
-class="close">
+<button onclick="closeProfile()">
 
 Tutup
 
-</div>
-
+</button>
 
 
 </div>
@@ -593,6 +488,7 @@ Tutup
 
 
 let currentRack;
+
 let currentBox;
 
 
@@ -627,17 +523,17 @@ document.getElementById("tubeGrid");
 
 
 
-// RAK 1-100
 
+// RAK 1-100
 
 for(let i=1;i<=100;i++){
 
 
-let r=document.createElement("div");
+let r =
+document.createElement("div");
 
 
 r.className="rack";
-
 
 r.innerHTML="R"+i;
 
@@ -667,11 +563,14 @@ currentRack=r;
 
 rackPage.classList.add("hidden");
 
+
 boxPage.classList.remove("hidden");
+
 
 
 rackTitle.innerHTML=
 "RAK "+r;
+
 
 
 
@@ -682,12 +581,16 @@ boxGrid.innerHTML="";
 for(let i=1;i<=10;i++){
 
 
-let b=document.createElement("div");
+let b =
+document.createElement("div");
 
 
 b.className="box";
 
-b.innerHTML="BOX "+i;
+
+b.innerHTML=
+"BOX "+i;
+
 
 
 b.onclick=()=>openBox(i);
@@ -700,9 +603,7 @@ boxGrid.appendChild(b);
 }
 
 
-
 }
-
 
 
 
@@ -716,6 +617,7 @@ function openBox(b){
 currentBox=b;
 
 
+
 boxPage.classList.add("hidden");
 
 
@@ -723,7 +625,9 @@ tubePage.classList.remove("hidden");
 
 
 
+
 boxTitle.innerHTML=
+
 "RAK "
 +currentRack+
 " BOX "
@@ -731,8 +635,9 @@ boxTitle.innerHTML=
 
 
 
-
 tubeGrid.innerHTML="";
+
+
 
 
 
@@ -742,35 +647,51 @@ for(let row=1;row<=10;row++){
 for(let col=1;col<=10;col++){
 
 
-
-let index=
+let pos =
 (row-1)*10+col;
 
 
 
-let t=document.createElement("div");
+
+
+let code =
+
+"C045"
+
++
+
+String(currentRack)
+.padStart(3,"0")
+
++
+
+"B"
+
++
+
+String(currentBox)
+.padStart(2,"0")
+
++
+
+String(pos)
+.padStart(3,"0");
+
+
+
+
+
+
+let t =
+document.createElement("div");
+
 
 
 t.className="tube";
 
 
 
-let code=
-
-"C045"
-
-+String(currentRack).padStart(2,"0")
-
-+String(currentBox).padStart(2,"0")
-
-+"B"
-
-+String(index).padStart(2,"0");
-
-
-
-
-t.innerHTML=index;
+t.innerHTML=code;
 
 
 
@@ -787,18 +708,18 @@ t
 
 
 
+
 tubeGrid.appendChild(t);
 
 
 
 }
 
-}
-
 
 }
 
 
+}
 
 
 
@@ -806,7 +727,8 @@ tubeGrid.appendChild(t);
 
 
 
-function showTube(code,row,col,el){
+
+function showTube(code,row,col,t){
 
 
 document
@@ -815,44 +737,40 @@ document
 
 
 
-el.classList.add("active");
+t.classList.add("active");
 
 
 
-tubeInfo.innerHTML=
+info.innerHTML=
 
 `
-<b>ID Tube:</b> ${code}
+<b>ID Tube</b><br>
+${code}
 
 <br><br>
 
-<b>Freezer:</b>
+Freezer:
 -80°C C
 
 <br>
 
-<b>Rak:</b>
+Rak:
 ${currentRack}
 
 <br>
 
-<b>Box:</b>
+Box:
 ${currentBox}
 
 <br>
 
-<b>Posisi:</b>
+Posisi:
 Baris ${row}
 Kolom ${col}
 
 <br><br>
 
-<b>Sampel:</b>
-Plasma EDTA
-
-<br>
-
-<b>Status:</b>
+Status:
 🟢 Tersimpan
 
 `;
@@ -869,11 +787,13 @@ profile.classList.add("show");
 
 
 
+
 function closeProfile(){
 
 profile.classList.remove("show");
 
 }
+
 
 
 
@@ -906,61 +826,59 @@ boxPage.classList.remove("hidden");
 
 
 
-function searchData(){
+function searchTube(){
 
 
-let key=
+let key =
 search.value.toUpperCase();
 
 
 
 document
 .querySelectorAll(".rack,.box,.tube")
-.forEach(x=>{
-
-x.classList.remove("active");
-
-});
+.forEach(x=>x.classList.remove("active"));
 
 
 
-if(!key)return;
-
+let data =
+key.match(
+/C045(\d{3})B(\d{2})(\d{3})/
+);
 
 
 
 
-let data=
-key.match(/C045(\d{2})(\d{2})B(\d{2})/);
-
-
-
-if(data){
-
-
-let r=parseInt(data[1]);
-
-let b=parseInt(data[2]);
+if(!data)return;
 
 
 
 
+let rack =
+parseInt(data[1]);
+
+
+let box =
+parseInt(data[2]);
+
+
+
+
+// rak hijau
 
 document
 .querySelectorAll(".rack")
 .forEach(x=>{
 
-
-if(x.innerHTML=="R"+r)
+if(x.innerHTML=="R"+rack)
 
 x.classList.add("active");
-
 
 });
 
 
 
-openRack(r);
+openRack(rack);
+
 
 
 
@@ -972,7 +890,7 @@ document
 .forEach(x=>{
 
 
-if(x.innerHTML=="BOX "+b)
+if(x.innerHTML=="BOX "+box)
 
 x.classList.add("active");
 
@@ -980,7 +898,8 @@ x.classList.add("active");
 });
 
 
-openBox(b);
+
+openBox(box);
 
 
 
@@ -1000,11 +919,12 @@ x.classList.add("active");
 });
 
 
-},200);
+
+},300);
 
 
 
-},200);
+},300);
 
 
 
@@ -1012,10 +932,14 @@ x.classList.add("active");
 
 
 
+
+
+
+function camera(){
+
+alert("QR Scanner siap");
+
 }
-
-
-
 
 
 
@@ -1023,4 +947,5 @@ x.classList.add("active");
 
 
 </body>
+
 </html>
